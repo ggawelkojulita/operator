@@ -1,6 +1,7 @@
 ## Table of contents
 * [Introduction](#introduction)
 * [Structure](#structure)
+* [Important notes](#important-notes)
 * [How to run this app](#how-to-run-this-app)
 * [Backend endpoints - Django](#backend-endpoints---django)
 * [Available pages - React](#available-pages---react)
@@ -12,10 +13,13 @@ and also display Argyle accounts assigned to user.
 
 ## Structure
 - `api` - contains Django app files
-
 - `frontend` - contains React app files
-
 - `tools` - contains configuration files (environment settings and Dockerfile)
+
+## Important Notes
+
+1. Until the admin sets the Homepage Settings (`/admin/homepage/`), the Homepage will be blank.
+2. Until the admin sets the Argyle API keys (`/admin/api-keys/`), generating user links will be returning error.
 
 
 ## How to run this app?
@@ -32,50 +36,23 @@ db:
       POSTGRES_USER: <postgres_user>
       POSTGRES_PASSWORD: <postgress_password>
       POSTGRES_DB: <database_name>
- ```
+```
 
 ### 3. Build and run backend app
-#### Local
-```
-cd api
-brew install pyenv
-brew update
-brew upgrade pyenv
-
-pyenv install 3.8.5
-pyenv local 3.8.5
-pip install --upgrade pip setuptools virtualenv
-virtualenv .venv
-
-# activate venv
-source ./.venv/bin/activate
-
-# install all requirements
-pip install --upgrade pip setuptools
-pip install --upgrade -r bkmrk-standalone/requirements.txt
-
-# run backend
-python manage.py migrate
-python manage.py collectstatic
-python manage.py createsuperuser
-
-python manage.py runserver
-
-# run frontend
-cd frontend
-npm install
-npm start
-```
-
 #### Docker
 ```
-# build and run project
+# build and run backend project
 cd argyle-operator
 docker-compose up -d
 docker-compose logs -tf
 
 # create admin
 docker-compose exec api python manage.py createsuperuser
+
+# run frontend
+cd frontend
+npm install
+npm start
 ```
 
 #### Docker + Makefile
@@ -106,10 +83,6 @@ make run
 * Generator (`/admin/generator/`) - the form allows to create a new user link with specific data 
 * User List (`/admin/user-list/`) - the list of users with opportunity to send email and sms message again, display information about linked accounts and pay allocations 
 * Logout (`/admin/logout/`) - logout
-
-### **Important Notes**
-1. Until the admin sets the Homepage Settings (`/admin/homepage/`), the Homepage will be blank.
-2. Until the admin sets the Argyle API keys (`/admin/api-keys/`), generating user links will be returning error.
 
 ## Extra
 ### Makefile
